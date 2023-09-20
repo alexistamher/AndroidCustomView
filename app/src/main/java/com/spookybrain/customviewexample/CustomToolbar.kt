@@ -19,6 +19,10 @@ class CustomToolbar(context: Context, attrs: AttributeSet)
     private lateinit var ibOk: ImageButton
     private lateinit var tvTitle: TextView
 
+    private var onMenuPressedListener: (() -> Unit)? = null
+    private var onOkPressedListener: (() -> Unit)? = null
+    private var onGoBackPressedListener: (() -> Unit)? = null
+
     init {
         LayoutInflater.from(context).inflate(R.layout.custom_toolbar, this)
 
@@ -61,5 +65,25 @@ class CustomToolbar(context: Context, attrs: AttributeSet)
             2 -> CustomToolbarBehavior.MenuBehavior
             else -> CustomToolbarBehavior.CheckBehavior
         }
+
+        setListeners()
+    }
+
+    private fun setListeners() {
+        ibMenu.setOnClickListener { onMenuPressedListener?.invoke() }
+        ibGoBack.setOnClickListener { onGoBackPressedListener?.invoke() }
+        ibOk.setOnClickListener { onOkPressedListener?.invoke() }
+    }
+
+    fun setOnMenuPressedListener(callback: () -> Unit) {
+        onMenuPressedListener = callback
+    }
+
+    fun setOnGoBackPressedListener(callback: () -> Unit) {
+        onGoBackPressedListener = callback
+    }
+
+    fun setOnOkPressedListener(callback: () -> Unit) {
+        onOkPressedListener = callback
     }
 }
